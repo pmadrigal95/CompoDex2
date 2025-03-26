@@ -27,6 +27,8 @@
                 </div>
 
                 <CreateDocumentation />
+
+                <HelloWorld />
             </div>
         </main>
 
@@ -56,4 +58,5 @@
 <script setup>
 import Header from '@/components/Header.vue';
 import CreateDocumentation from '@/components/CreateDocumentation.vue';
+import HelloWorld from '@/components/HelloWorld.vue';
 </script>

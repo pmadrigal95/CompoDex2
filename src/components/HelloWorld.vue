@@ -1,43 +1,45 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
+import { generateDocumentation } from "@/utils/openaiHelper.js";
 
-defineProps({
-  msg: String,
-})
+const componentName = ref("ButtonComponent");
+const description = ref("Un botón reutilizable con variantes de tamaño y color.");
+const code = ref(`<template><button :class="buttonClass">{{ label }}</button></template>`);
+const tags = ref(["Vue", "UI", "Reusable"]);
+const documentation = ref("");
 
-const count = ref(0)
+const generateDoc = async () => {
+  documentation.value = "Generando documentación...";
+  documentation.value = await generateDocumentation(componentName.value, description.value, code.value, tags.value);
+};
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
+  <div class="container">
+    <h1>Generador de Documentación</h1>
+    <button @click="generateDoc">Generar Documentación</button>
+    <pre>{{ documentation }}</pre>
   </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Learn more about IDE Support for Vue in the
-    <a
-      href="https://vuejs.org/guide/scaling-up/tooling.html#ide-support"
-      target="_blank"
-      >Vue Docs Scaling up Guide</a
-    >.
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+.container {
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+}
+
+button {
+  background: #42b883;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+pre {
+  background: #f5f5f5;
+  padding: 10px;
+  text-align: left;
 }
 </style>
