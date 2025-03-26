@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" v-motion :initial="{ opacity: 0 }" :enter="{ opacity: 1 }"
             :transition="{ duration: 500 }">
             <div class="space-y-6">
@@ -76,7 +76,7 @@ import DocumentationPreview from './DocumentationPreview.vue';
 import { toast } from 'vue3-toastify'; // Importar toast
 import 'vue3-toastify/dist/index.css'; // Importar los estilos de Toastify
 
-import { generateDocumentation } from "@/utils/openaiHelper";
+import { generateDocumentation } from "@/utils/geminiAIHelper";
 
 const code = ref('');
 const componentName = ref('');
@@ -92,7 +92,7 @@ const handleGenerate = async () => {
 
     isGenerating.value = true;
 
-    generatedDoc.value = await generateDocumentation(componentName.value, description.value, code.value);
+    generatedDoc.value = await generateDocumentation(componentName.value, description.value, code.value, []);
 
     toast.success("Your component documentation has been created successfully.");
 

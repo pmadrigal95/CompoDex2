@@ -4,13 +4,15 @@ const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
 export const generateDocumentation = async (name, description, code, tags = []) => {
   try {
+    const prompt = generatePrompt(name, description, code, tags);
+    
     const response = await fetch("https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=" + apiKey, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{
           role: "user",
-          parts: [{ text: generatePrompt(name, description, code, tags) }]
+          parts: [{ text: prompt }]
         }]
       })
     });

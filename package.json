@@ -13,6 +13,7 @@
     "@vueuse/motion": "^3.0.3",
     "codemirror": "^5.65.19",
     "codemirror-editor-vue3": "^2.8.0",
+    "md-editor-v3": "^2.9.0-beta.3",
     "pinia": "^3.0.1",
     "tailwind-merge": "^2.5.2",
     "vue": "^3.5.13",

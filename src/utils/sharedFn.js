@@ -1,4 +1,4 @@
-export const generatePrompt = async (name, description, code, tags = []) => {
+export const generatePrompt = (name, description, code, tags = []) => {
   return `
         Genera documentación completa para el siguiente componente Vue.
 

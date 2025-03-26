@@ -3,8 +3,8 @@
         <Header />
 
         <main class="flex-1">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" v-motion :initial="{ opacity: 0 }"
-                :enter="{ opacity: 1 }" :transition="{ duration: 400 }">
+            <div class="mx-auto px-4 sm:px-6 lg:px-8 py-8" v-motion :initial="{ opacity: 0 }" :enter="{ opacity: 1 }"
+                :transition="{ duration: 400 }">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                     <div v-motion :initial="{ opacity: 0, y: 20 }" :enter="{ opacity: 1, y: 0 }"
                         :transition="{ duration: 500 }" class="inline-block">
@@ -27,8 +27,6 @@
                 </div>
 
                 <CreateDocumentation />
-
-                <HelloWorld />
             </div>
         </main>
 
