@@ -74,7 +74,8 @@
 import { ref } from 'vue';
 import CodeEditor from './CodeEditor.vue';
 import DocumentationPreview from './DocumentationPreview.vue';
-// import { useToast } from '@/composables/useToast';
+import { toast } from 'vue3-toastify'; // Importar toast
+import 'vue3-toastify/dist/index.css'; // Importar los estilos de Toastify
 
 import { generateDocumentation } from "@/utils/openaiHelper";
 
@@ -87,21 +88,18 @@ const generatedDoc = ref({
     description: ''
 });
 
-// const toast = useToast();
-
 const handleGenerate = async () => {
     if (!code.value.trim()) {
-        // toast.error({
-        //     title: "Missing component code",
-        //     description: "Please enter your Vue component code before generating documentation."
-        // });
-        alert('Please enter your Vue component code before generating documentation.');
+        // Mostrar un toast de error cuando no se ingresa código
+        toast.error("Please enter your Vue component code before generating documentation.");
         return;
     }
 
     isGenerating.value = true;
 
     generatedDoc.value = await generateDocumentation(componentName.value, description.value, code.value);
+
+    toast.success("Your component documentation has been created successfully.");
 
     isGenerating.value = false;
 
