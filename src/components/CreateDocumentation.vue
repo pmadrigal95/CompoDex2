@@ -12,7 +12,14 @@
                         </p>
                     </div>
 
-                    <CodeEditor v-model="code" />
+                    <div class="space-y-2">
+                        <label for="description" class="text-sm font-medium">
+                            Component Name
+                        </label>
+                        <input id="name" v-model="componentName" type="text"
+                            placeholder="Enter the name of your component..."
+                            class="w-full p-3 bg-secondary/50 rounded-lg border-[1.5px] border-border focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none transition-all" />
+                    </div>
 
                     <div class="space-y-2">
                         <label for="description" class="text-sm font-medium">
@@ -20,14 +27,16 @@
                         </label>
                         <textarea id="description" v-model="description"
                             placeholder="Enter a description of what your component does..."
-                            class="w-full p-3 bg-secondary/50 rounded-lg border-[1.5px] border-border focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none transition-all resize-none min-h-[100px]">
+                            class="w-full p-3 bg-secondary/50 rounded-lg border-[1.5px] border-border focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none transition-all resize-none min-h-[60px]">
               </textarea>
                     </div>
 
+                    <CodeEditor v-model="code" class="space-y-2" />
+
                     <button @click="handleGenerate"
                         class="w-full bg-primary text-primary-foreground font-medium py-2.5 px-4 rounded-lg transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none"
-                        :disabled="isGenerating || !code.trim()" v-motion :hover="{ scale: 1.01 }"
-                        :tap="{ scale: 0.98 }">
+                        :disabled="isGenerating || !code.trim() || !componentName.trim()" v-motion
+                        :hover="{ scale: 1.01 }" :tap="{ scale: 0.98 }">
                         <span class="flex items-center justify-center" v-if="isGenerating">
                             <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24">
@@ -67,7 +76,10 @@ import CodeEditor from './CodeEditor.vue';
 import DocumentationPreview from './DocumentationPreview.vue';
 // import { useToast } from '@/composables/useToast';
 
+import { generateDocumentation } from "@/utils/openaiHelper";
+
 const code = ref('');
+const componentName = ref('');
 const description = ref('');
 const isGenerating = ref(false);
 const generatedDoc = ref({
@@ -77,7 +89,7 @@ const generatedDoc = ref({
 
 // const toast = useToast();
 
-const handleGenerate = () => {
+const handleGenerate = async () => {
     if (!code.value.trim()) {
         // toast.error({
         //     title: "Missing component code",
@@ -89,21 +101,9 @@ const handleGenerate = () => {
 
     isGenerating.value = true;
 
-    // Simulate API call with timeout
-    setTimeout(() => {
-        generatedDoc.value = {
-            code: code.value,
-            description: description.value || 'A Vue component.'
-        };
+    generatedDoc.value = await generateDocumentation(componentName.value, description.value, code.value);
 
-        isGenerating.value = false;
+    isGenerating.value = false;
 
-        // toast.success({
-        //     title: "Documentation generated",
-        //     description: "Your component documentation has been created successfully."
-        // });
-
-        alert('Your component documentation has been created successfully.');
-    }, 1500);
 };
 </script>

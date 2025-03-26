@@ -36,7 +36,7 @@
             :enter="{ opacity: 1 }" :transition="{ duration: 400, delay: 500 }">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
                 <p class="text-sm text-muted-foreground">
-                    © 2023 DocuVue. All rights reserved.
+                    © 2025 CompoDex. All rights reserved.
                 </p>
 
                 <div class="flex items-center space-x-6 mt-4 md:mt-0">
@@ -58,5 +58,4 @@
 <script setup>
 import Header from '@/components/Header.vue';
 import CreateDocumentation from '@/components/CreateDocumentation.vue';
-import HelloWorld from '@/components/HelloWorld.vue';
 </script>

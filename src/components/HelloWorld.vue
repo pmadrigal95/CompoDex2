@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref } from "vue";
 import { generateDocumentation } from "@/utils/openaiHelper.js";
 
@@ -42,4 +42,45 @@ pre {
   padding: 10px;
   text-align: left;
 }
-</style>
+</style> -->
+
+
+<template>
+  <Codemirror v-model:value="code" :options="cmOptions" border placeholder="test placeholder" :height="200"
+    @change="change" />
+</template>
+
+<script>
+import Codemirror from "codemirror-editor-vue3";
+
+// placeholder
+import "codemirror/addon/display/placeholder.js";
+
+// language
+import "codemirror/mode/javascript/javascript.js";
+// placeholder
+import "codemirror/addon/display/placeholder.js";
+// theme
+import "codemirror/theme/dracula.css";
+
+import { ref } from "vue";
+export default {
+  components: { Codemirror },
+  setup() {
+    const code = ref(`
+var i = 0;
+for (; i < 9; i++) {
+  console.log(i);
+  // more statements
+}`);
+
+    return {
+      code,
+      cmOptions: {
+        mode: "text/javascript", // Language mode
+        theme: "dracula", // Theme
+      },
+    };
+  },
+};
+</script>

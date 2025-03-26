@@ -127,7 +127,7 @@ export const generatePrompt = async (name, description, code, tags = []) => {
 /**
  * Genera documentación de ejemplo cuando la API de OpenAI no está disponible
  */
-export const generateFallbackDocumentation = (name, description, code, tags) => {
+export const generateFallbackDocumentation = (name, description, code, tags = []) => {
   // Extraer props, eventos y slots del código (de manera muy básica)
   const propsMatch = code.match(/props:\s*{([^}]*)}/s);
   const emitsMatch = code.match(/emits:\s*\[(.*?)\]/s) || code.match(/\$emit\(['"](.+?)['"]/g);

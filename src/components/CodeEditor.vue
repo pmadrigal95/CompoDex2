@@ -10,37 +10,31 @@
             </span>
         </div>
 
-        <div :class="`
-        code-area transition-all duration-200
-        ${isFocused ? 'ring-2 ring-primary/20 border-primary/30' : ''}
-      `">
-            <textarea id="code-editor" ref="textareaRef" :value="modelValue"
-                @input="$emit('update:modelValue', $event.target.value)" @focus="isFocused = true"
-                @blur="isFocused = false" @keydown="handleKeyDown" :placeholder="placeholder"
-                class="w-full bg-transparent resize-none outline-none min-h-[200px] font-mono text-sm"
-                spellcheck="false">
-        </textarea>
-        </div>
+        <!-- Editor de código -->
+        <Codemirror v-model:value="code" :options="cmOptions" border :placeholder="placeholder" :height="300"
+            @change="handleChange" />
 
         <div class="flex justify-between items-center mt-2">
             <div class="flex items-center space-x-2">
-                <div :class="`h-2 w-2 rounded-full ${modelValue.length > 0 ? 'bg-green-500' : 'bg-muted'}`"></div>
+                <div :class="`h-2 w-2 rounded-full ${code.length > 0 ? 'bg-green-500' : 'bg-muted'}`"></div>
                 <span class="text-xs text-muted-foreground">
-                    {{ modelValue.length }} characters
+                    {{ code.length }} characters
                 </span>
-            </div>
-
-            <div class="text-xs text-muted-foreground">
-                Vue 3
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted, nextTick } from 'vue';
-import { useMotion } from '@vueuse/motion';
+import { ref, watch } from 'vue';
+import Codemirror from 'codemirror-editor-vue3';
 
+// Importar dependencias de Codemirror
+import 'codemirror/addon/display/placeholder.js'; // Placeholder
+import 'codemirror/mode/javascript/javascript.js'; // Modo de lenguaje JavaScript
+import 'codemirror/theme/dracula.css'; // Tema
+
+// Definir propiedades de entrada (props)
 const props = defineProps({
     modelValue: {
         type: String,
@@ -56,45 +50,31 @@ const props = defineProps({
     }
 });
 
+// Emitir eventos
 const emit = defineEmits(['update:modelValue']);
 
-const textareaRef = ref(null);
-const isFocused = ref(false);
+// Definir variables reactivas
+const code = ref(props.modelValue); // Inicializar con modelValue
 
-// Auto-resize textarea
-watch(() => props.modelValue, () => {
-    nextTick(() => {
-        const textarea = textareaRef.value;
-        if (textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = `${textarea.scrollHeight}px`;
-        }
-    });
-}, { immediate: true });
-
-onMounted(() => {
-    const textarea = textareaRef.value;
-    if (textarea) {
-        textarea.style.height = 'auto';
-        textarea.style.height = `${textarea.scrollHeight}px`;
-    }
+// Opciones para Codemirror
+const cmOptions = ref({
+    mode: 'text/javascript', // Modo de lenguaje
+    theme: 'dracula', // Tema
 });
 
-const handleKeyDown = (e) => {
-    if (e.key === 'Tab') {
-        e.preventDefault();
-        const start = e.target.selectionStart;
-        const end = e.target.selectionEnd;
-
-        const newValue = props.modelValue.substring(0, start) + '  ' + props.modelValue.substring(end);
-        emit('update:modelValue', newValue);
-
-        // Set cursor position after the inserted tab
-        nextTick(() => {
-            if (textareaRef.value) {
-                textareaRef.value.selectionStart = textareaRef.value.selectionEnd = start + 2;
-            }
-        });
-    }
+// Función para manejar el cambio de código
+const handleChange = (newValue) => {
+    code.value = newValue; // Actualiza el valor del código
+    emit('update:modelValue', newValue); // Emite el nuevo valor al padre
 };
+
+// Observar cambios en modelValue (propiedad externa)
+watch(() => props.modelValue, (newValue) => {
+    code.value = newValue; // Sincronizar el valor con modelValue
+});
+
+// Opcional: Ajuste de la altura del editor, en caso de ser necesario
+watch(code, (newCode) => {
+    // Puedes manejar el auto-resize si es necesario
+});
 </script>

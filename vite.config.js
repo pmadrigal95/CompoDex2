@@ -14,6 +14,10 @@ export default defineConfig({
     vue(),
   ],
 
+  optimizeDeps: {
+    include: ['codemirror', 'codemirror-editor-vue3']
+  },
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
