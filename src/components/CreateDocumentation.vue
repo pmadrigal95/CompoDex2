@@ -62,8 +62,7 @@
                             'Enter component details and click generate' }}
                     </p>
 
-                    <DocumentationPreview :componentCode="generatedDoc.code" :description="generatedDoc.description"
-                        :isLoading="isGenerating" />
+                    <DocumentationPreview :componentCode="generatedDoc" :isLoading="isGenerating" />
                 </div>
             </div>
         </div>
@@ -83,14 +82,10 @@ const code = ref('');
 const componentName = ref('');
 const description = ref('');
 const isGenerating = ref(false);
-const generatedDoc = ref({
-    code: '',
-    description: ''
-});
+const generatedDoc = ref('');
 
 const handleGenerate = async () => {
     if (!code.value.trim()) {
-        // Mostrar un toast de error cuando no se ingresa código
         toast.error("Please enter your Vue component code before generating documentation.");
         return;
     }
